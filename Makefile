@@ -14,6 +14,11 @@ ifeq ($(CP),)
   CP=cp
 endif
 
+# fix for mac https://github.com/katmagic/Shallot/issues/27
+OS_DETECTED := $(shell gcc -dumpmachine)
+ifneq (, $(findstring darwin, $(OS_DETECTED)))
+    CFLAGS:=$(CFLAGS) -I/usr/local/opt/openssl/include -L/usr/local/opt/openssl/lib
+endif
 
 CFLAGS:=$(CFLAGS) -O3 -I/usr/include -I/usr/local/include -L/usr/lib -L/usr/local/lib
 LIBS:=-lm -lpthread -lssl -lcrypto
